@@ -9,6 +9,8 @@ export const metadata = {
 };
 
 
+
+import Layout from "./components/Layout";
 import Providers from "./providers";
 
 export default function RootLayout({ children }) {
@@ -20,8 +22,11 @@ export default function RootLayout({ children }) {
     
 
     <Providers>
+    <Layout>
 
     {children}
+    </Layout>
+  
 
 
 
