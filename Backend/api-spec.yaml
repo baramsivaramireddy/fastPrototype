@@ -13,7 +13,7 @@ tags:
   - name: common
   - name: user
   - name: upload
-  - name: applicationType
+
 
 paths:
   /health-check:
@@ -106,7 +106,7 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/User'
-
+  /api/user/{id}:
     get:
       summary: Get a user by ID
       tags:
@@ -220,69 +220,7 @@ paths:
                     type: string
                     description: Error message
 
-    get:
-      summary: Get a user application by ID
-      tags:
-        - applications
-      parameters:
-        - in: path
-          name: id
-          required: true
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Successful operation
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/UserApplication'
-        '404':
-          description: Not Found
-        '500':
-          description: Internal Server Error
 
-    put:
-      summary: Update a user application by ID
-      tags:
-        - applications
-      parameters:
-        - in: path
-          name: id
-          required: true
-          schema:
-            type: string
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/UserApplication'
-      responses:
-        '200':
-          description: Updated successfully
-        '404':
-          description: Not Found
-        '500':
-          description: Internal Server Error
-
-    delete:
-      summary: Delete a user application by ID
-      tags:
-        - applications
-      parameters:
-        - in: path
-          name: id
-          required: true
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Deleted successfully
-        '404':
-          description: Not Found
-        '500':
-          description: Internal Server Error
   /api/role:
     post:
       summary: Create a new role
@@ -384,48 +322,7 @@ paths:
           description: Internal Server Error
 components:
   schemas:
-    ApplicationType:
-      type: object
-      properties:
-        name:
-          type: string
-        description:
-          type: string
-          
-    ApplicationStage:
-      type: object
-      properties:
-        applicationType:
-          type: string
-          description: Application type ID
-        stageName:
-          type: string
-          description: Name of the application stage
-        order:
-          type: integer
-          description: Order of the application stage
-        roleId:
-          type: string
-          description: Role ID required for the application stage
-          
-    UserApplication:
-      type: object
-      properties:
-        userId:
-          type: string
-          description: User ID
-        document:
-          type: string
-          description: Document details
-        application_typeId:
-          type: string
-          description: Application type ID
-        currentStage:
-          type: string
-          description: Current stage of the application
-        status:
-          type: string
-          description: Application status
+
     Role:
       type: object
       properties:

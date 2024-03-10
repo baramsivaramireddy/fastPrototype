@@ -60,7 +60,7 @@ Node version i used is v20.11.0
 
 4. install nodemon globally
     ```
-    npm install -g
+    npm install -g nodemon
     ```
 
 5. run the backend

@@ -1,7 +1,6 @@
 
 import { AuthProvider } from "@/hooks/useAuth"
 
-import { Toaster } from 'react-hot-toast';
 const Providers = ({children} ) =>{
 
 
@@ -9,7 +8,6 @@ const Providers = ({children} ) =>{
     return (
         
         <AuthProvider>
-        <Toaster />
         {children}
         </AuthProvider>
        
