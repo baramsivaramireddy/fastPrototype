@@ -30,6 +30,7 @@ Node version i used is v20.11.0
 
 2. Add the following variables to env file
 
+
     ```
     #mongodb url
     MONGO_URI =''
@@ -37,7 +38,7 @@ Node version i used is v20.11.0
     #when running app locally . In production (vercel) It must not be present
     ENV_TYPE='local'
 
-    #for signing the token
+    #for signing the token ( for generating key type 'openssl rand -hex 32 ' in bash)
     SECRET_KEY = ''
 
     #Aws access key and secret key , bucket name for storing the binary data
