@@ -1,7 +1,7 @@
 "use client"
 import {AuthContext} from '@/utils/context'
 import { useCallback, useContext, useEffect, useMemo, useState } from "react";
-
+import {    isTokenExpired } from '@/utils/tokenHelpers'
 
 const AuthProvider = ({children}) =>{
 
@@ -11,8 +11,21 @@ const AuthProvider = ({children}) =>{
    
    
     useEffect( () =>{
-        let userStoredToken = getToken()
-        setUserToken(userStoredToken)
+    
+        const  TokenLoadingAndCheckingTokenExpired = async () =>{
+
+            let userStoredToken = await getToken()
+            if(  userStoredToken != null && isTokenExpired(userStoredToken)){
+
+                removeToken()
+            }
+            else{
+                setUserToken(userStoredToken)
+            }
+            
+           }
+           TokenLoadingAndCheckingTokenExpired()
+
     },[])
     const login = useCallback((token) =>{
         setToken(token)
@@ -64,3 +77,4 @@ const removeToken = () =>{
 
     localStorage.clear()
 }
+

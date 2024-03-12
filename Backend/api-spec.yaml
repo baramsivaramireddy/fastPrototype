@@ -370,9 +370,7 @@ components:
         password:
           type: string
           description: Password of the user
-        phoneNumber:
-          type: string
-          description: Phone number of the user
+       
         roleId:
           type: string
           description: ID of the role for the user
@@ -389,9 +387,7 @@ components:
         password:
           type: string
           description: Updated password of the user
-        phoneNumber:
-          type: string
-          description: Updated phone number of the user
+       
         roleId:
           type: string
           description: Updated ID of the role for the user

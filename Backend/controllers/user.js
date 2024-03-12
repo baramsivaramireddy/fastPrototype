@@ -5,20 +5,65 @@ const dbconnect = require(path.resolve(__dirname, '..', 'dbconnect'));
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
+/**
+ * User controller
+ * 
+ * signup 
+ *       first one to signup is given admin role
+ *       all others user role
+ */
+
+const defaultRole = 'user';
+const ADMINROLE = 'admin';
 module.exports = {
   signup: async (req, res) => {
     try {
       await dbconnect();
-      const { name, email, password, phoneNumber, roleId } = req.body;
+      const { name, email, password, roleId } = req.body;
+
+
+      // Hash the password
+      const hashedPassword = await bcrypt.hash(password, 10);
+
+      let userCount = await User.find({}).countDocuments();
+
+      if (userCount == 0) {
+
+
+        let adminRole = await Role.findOne({ name: ADMINROLE });
+
+        if (adminRole == null) {
+          adminRole = new Role({ name: ADMINROLE })
+          await adminRole.save()
+        }
+
+
+
+        // Create user with specified role
+        const user = new User({
+          name,
+          email,
+          password: hashedPassword,
+          role: adminRole._id,
+        });
+
+        await user.save();
+
+
+        return res.status(201).json({message:'admin is created'})
+      }
+
+
+
 
       const existingUser = await User.findOne({ email });
-      
+
       if (existingUser) {
         return res.status(400).json({ message: 'User already exists' });
       }
 
 
-      const defaultRole = 'user';
+
 
       let role = await Role.findOne({ name: defaultRole });
 
@@ -27,16 +72,14 @@ module.exports = {
         await role.save();
       }
 
-      
-      // Hash the password
-      const hashedPassword = await bcrypt.hash(password, 10);
+
 
       // Create user with specified role
       const user = new User({
         name,
         email,
         password: hashedPassword,
-        phoneNumber,
+   
         role: role._id,
       });
 
@@ -82,7 +125,7 @@ module.exports = {
   create: async (req, res) => {
     try {
       await dbconnect();
-      const { name, email, password, phoneNumber, roleId } = req.body;
+      const { name, email, password, roleId } = req.body;
 
       const existingUser = await User.findOne({ email });
 
@@ -104,7 +147,7 @@ module.exports = {
         name,
         email,
         password: hashedPassword,
-        phoneNumber,
+    
         role: role._id,
       });
 
@@ -139,7 +182,7 @@ module.exports = {
     try {
       await dbconnect();
       const userId = req.params.id;
-      const { name, email, password, phoneNumber, roleId } = req.body;
+      const { name, email, password,  roleId } = req.body;
 
       const user = await User.findById(userId);
 
@@ -157,7 +200,7 @@ module.exports = {
       user.name = name;
       user.email = email;
       user.password = password ? await bcrypt.hash(password, 10) : user.password;
-      user.phoneNumber = phoneNumber;
+      
       user.role = role._id;
 
       await user.save();
